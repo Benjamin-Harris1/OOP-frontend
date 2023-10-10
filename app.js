@@ -37,9 +37,11 @@ async function initApp() {
   artistListRenderer.render();
 
   // Clear and render a new list
-  albumListRenderer.clear();
+  //albumListRenderer.clear();
   //albumListRenderer.sort("release_date", "desc");
   albumListRenderer.render();
+
+  trackListRenderer.render();
 
   await updateArtistsGrid();
 }
