@@ -24,5 +24,10 @@ export default class ListRenderer {
   }
   render() {
     this.clear();
+
+    // for (const itemRenderer of this.list) {
+    //   const html = itemRenderer.render();
+    //   this.container.insertAdjacentHTML("beforeend", html);
+    // }
   }
 }

@@ -39,19 +39,17 @@ async function updateArtistsGrid() {
   renderTracks(tracks, trackRenderer);
 }
 
-async function searchBackend(query) {
+async function searchBackend(query, artistListRenderer, albumListRenderer, trackListRenderer) {
   const response = await fetch(`${endpoint}/fullAlbums/search?q=${query}`);
   const searchData = await response.json();
-  updateSearchResults(searchData);
-}
 
-function updateSearchResults(searchResults) {
-  if (searchResults && Array.isArray(searchResults)) {
+  // Filter and update search results in the corresponding list renderer
+  if (searchData && Array.isArray(searchData)) {
     const filteredArtists = [];
     const filteredAlbums = [];
     const filteredTracks = [];
 
-    for (const result of searchResults) {
+    for (const result of searchData) {
       if (result.name !== null && result.career_start !== null) {
         filteredArtists.push(result);
       }
@@ -63,9 +61,18 @@ function updateSearchResults(searchResults) {
       }
     }
 
-    showArtists(filteredArtists);
-    showAlbums(filteredAlbums);
-    showTracks(filteredTracks);
+    // Update the respective list renderers with the filtered data
+    artistListRenderer.setList(filteredArtists);
+    albumListRenderer.setList(filteredAlbums);
+    trackListRenderer.setList(filteredTracks);
+    console.log(filteredArtists);
+    console.log(filteredAlbums);
+    console.log(filteredTracks);
+
+    // Render the updated lists
+    artistListRenderer.render();
+    albumListRenderer.render();
+    trackListRenderer.render();
   } else {
     console.log("Invalid search results data");
   }

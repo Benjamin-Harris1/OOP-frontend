@@ -21,7 +21,7 @@ async function initApp() {
   const searchInput = document.querySelector("#searchbar");
   searchInput.addEventListener("input", () => {
     const query = searchInput.value;
-    searchBackend(query);
+    searchBackend(query, artistListRenderer, albumListRenderer, trackListRenderer);
   });
 
   const artists = await readArtists();
