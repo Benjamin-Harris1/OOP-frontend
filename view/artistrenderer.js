@@ -1,4 +1,4 @@
-import ItemRenderer from "./itemrenderer";
+import ItemRenderer from "./itemrenderer.js";
 
 export default class ArtistRenderer extends ItemRenderer {
   render(artist) {

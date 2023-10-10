@@ -1,5 +1,8 @@
 export default class ItemRenderer {
-  render(item) {
-    return `<p>${item}</p>`;
+  constructor(item) {
+    this.item = item;
+  }
+  render() {
+    return `<p>${this.item}</p>`;
   }
 }

@@ -1,34 +1,42 @@
 "use strict";
 
-import { showArtists, showAlbums, showTracks } from "./app.js";
+import { artistRenderer, albumRenderer, trackRenderer, renderAlbums, renderArtists, renderTracks } from "./app.js";
+import Artist from "./model/artist.js";
+import Album from "./model/album.js";
+import Track from "./model/track.js";
 
 const endpoint = "https://mabi-testdata-01.azurewebsites.net/";
 
 async function readArtists() {
   const response = await fetch(`${endpoint}/artists`);
-  const data = response.json();
-  return data;
+  const data = await response.json();
+  return data.map((artistData) => new Artist(artistData));
 }
 
 async function readAlbums() {
   const response = await fetch(`${endpoint}/albums`);
-  const data = response.json();
-  return data;
+  const data = await response.json();
+  return data.map((albumData) => new Album(albumData));
 }
 
 async function readTracks() {
   const response = await fetch(`${endpoint}/tracks`);
-  const data = response.json();
-  return data;
+  const data = await response.json();
+  return data.map((trackData) => new Track(trackData));
 }
 
 async function updateArtistsGrid() {
-  const artists = await readArtists();
-  showArtists(artists);
-  const albums = await readAlbums();
-  showAlbums(albums);
-  const tracks = await readTracks();
-  showTracks(tracks);
+  const artistsData = await readArtists();
+  const albumsData = await readAlbums();
+  const tracksData = await readTracks();
+
+  const artists = artistsData.map((artistData) => new Artist(artistData));
+  const albums = albumsData.map((albumData) => new Album(albumData));
+  const tracks = tracksData.map((trackData) => new Track(trackData));
+
+  renderArtists(artists, artistRenderer);
+  renderAlbums(albums, albumRenderer);
+  renderTracks(tracks, trackRenderer);
 }
 
 async function searchBackend(query) {
@@ -63,4 +71,4 @@ function updateSearchResults(searchResults) {
   }
 }
 
-export { updateArtistsGrid, searchBackend };
+export { updateArtistsGrid, searchBackend, readAlbums, readArtists, readTracks };

@@ -1,4 +1,4 @@
-import ItemRenderer from "./itemrenderer";
+import ItemRenderer from "./itemrenderer.js";
 
 export default class TrackRenderer extends ItemRenderer {
   render(track) {
