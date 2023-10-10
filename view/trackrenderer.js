@@ -5,8 +5,10 @@ export default class TrackRenderer extends ItemRenderer {
     const html =
       /*html*/
       `
+      <div class="grid-item">
       <h2>${track.title}</h2>
       <p>Duration: ${track.duration}</p>
+      </div>
     `;
     return html;
   }
