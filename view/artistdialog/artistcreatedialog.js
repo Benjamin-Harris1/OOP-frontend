@@ -18,5 +18,15 @@ export default class ArtistCreateDialog extends Dialog {
     return html;
   }
 
-  create() {}
+  create() {
+    const form = this.dialog.querySelector("form");
+    this.artist = new Artist({
+      name: form.name.value,
+      career_start: form.career_start.value,
+    });
+
+    form.reset();
+
+    // controller.createArtist(this.artist)
+  }
 }
