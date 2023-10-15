@@ -5,14 +5,31 @@ import Artist from "./model/artist.js";
 import Album from "./model/album.js";
 import Track from "./model/track.js";
 
-const endpoint = "https://mabi-testdata-01.azurewebsites.net/";
+const endpoint = "http://localhost:3000";
 
+let allArtists = [];
+let lastFetch = 0;
+
+// FETCH ARTISTS
 async function readArtists() {
-  const response = await fetch(`${endpoint}/artists`);
-  const data = await response.json();
-  return data.map((artistData) => new Artist(artistData));
+  const now = Date.now();
+  const timePassed = now - lastFetch;
+
+  if (timePassed > 10_000) {
+    await refetchArtists();
+  }
+  return allArtists;
 }
 
+async function refetchArtists() {
+  const response = await fetch(`${endpoint}/artists`);
+  const originalArtist = await response.json();
+  allArtists = originalArtist.map((jsonObj) => new Artist(jsonObj));
+
+  lastFetch = Date.now();
+}
+
+// FETCH ALBUMS
 async function readAlbums() {
   const response = await fetch(`${endpoint}/albums`);
   const data = await response.json();
@@ -78,4 +95,43 @@ async function searchBackend(query, artistListRenderer, albumListRenderer, track
   }
 }
 
-export { updateArtistsGrid, searchBackend, readAlbums, readArtists, readTracks };
+// ARTISTS CREATE, UPDATE, DELETE
+
+async function createArtist(artist) {
+  const json = JSON.stringify(artist);
+  const response = await fetch(`${endpoint}/artists`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: json,
+  });
+
+  await refetchArtists();
+  return response.ok;
+}
+
+async function updateArtist(artist) {
+  const json = JSON.stringify(artist);
+  const response = await fetch(`${endpoint}/artists`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: json,
+  });
+
+  await refetchArtists();
+  return response.ok;
+}
+
+async function deleteArtist(artist) {
+  const response = await fetch(`${endpoint}/artists/${artist.id}`, {
+    method: "DELETE",
+  });
+
+  await refetchArtists();
+  response.ok;
+}
+
+export { updateArtistsGrid, searchBackend, readAlbums, readArtists, readTracks, createArtist, updateArtist, deleteArtist };

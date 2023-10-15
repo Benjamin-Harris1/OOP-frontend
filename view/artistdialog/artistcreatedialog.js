@@ -1,20 +1,19 @@
 import Dialog from "../dialog.js";
 import Artist from "../../model/artist.js";
-import * as controller from "../app.js";
+import * as controller from "../../app.js";
 
 export default class ArtistCreateDialog extends Dialog {
   renderHTML() {
-    const html =
-      /*html*/
-      `
-      <h1>Create artist</h1>
-      <form action="" method="dialog" id="create-form">
-      <label for="create-name"></label>
+    const html = /*html*/ `
+    <h1>Create artist</h1>
+    <form action="" method="dialog" id="create-form">
+      <label for="create-name">Name:</label>
       <input type="text" id="create-name" name="name" placeholder="Type the name of the artist here ...">
-      <label for="create-career_start" name="career_start" placeholder="Type the date of the artists career start"></label>
+      <label for="create-career_start">Career Start:</label>
+      <input type="text" id="create-career_start" name="career_start" placeholder="Type the date of the artist's career start ...">
       <button data-action="create">Create</button>
-      </form>
-    `;
+    </form>
+  `;
     return html;
   }
 
@@ -27,6 +26,6 @@ export default class ArtistCreateDialog extends Dialog {
 
     form.reset();
 
-    // controller.createArtist(this.artist)
+    controller.createArtist(this.artist);
   }
 }

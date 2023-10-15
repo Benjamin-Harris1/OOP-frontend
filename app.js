@@ -1,20 +1,24 @@
 "use strict";
 
-import { updateArtistsGrid, searchBackend, readArtists, readAlbums, readTracks } from "./rest.js";
-import AlbumRenderer from "./view/albumrenderer.js";
-import ArtistRenderer from "./view/artistrenderer.js";
-import TrackRenderer from "./view/trackrenderer.js";
-import ListRenderer from "./view/listrenderer.js";
+import * as REST from "./rest.js";
+import AlbumRenderer from "./view/renderer/albumrenderer.js";
+import ArtistRenderer from "./view/renderer/artistrenderer.js";
+import TrackRenderer from "./view/renderer/trackrenderer.js";
+import ListRenderer from "./view/renderer/listrenderer.js";
+import ArtistCreateDialog from "./view/artistdialog/artistcreatedialog.js";
+import ArtistDeleteDialog from "./view/artistdialog/artistdeletedialog.js";
 
 window.addEventListener("load", initApp);
-
-let artists = [];
-let albums = [];
-let tracks = [];
 
 const artistRenderer = new ArtistRenderer();
 const albumRenderer = new AlbumRenderer();
 const trackRenderer = new TrackRenderer();
+
+let artists = [];
+let artistList = new ListRenderer([], "#artists", artistRenderer);
+let albums = [];
+let tracks = [];
+let deleteDialog = null;
 
 async function initApp() {
   console.log("JS kører");
@@ -24,9 +28,39 @@ async function initApp() {
     searchBackend(query, artistListRenderer, albumListRenderer, trackListRenderer);
   });
 
-  const artists = await readArtists();
-  const albums = await readAlbums();
-  const tracks = await readTracks();
+  // EVENT LISTENERS
+
+  // CREATE EVENT
+  const createButton = document.querySelector("#create-new-button");
+  const artistCreateDialog = new ArtistCreateDialog("artist-create-dialog");
+  artistCreateDialog.render();
+  createButton.addEventListener("click", () => {
+    artistCreateDialog.show();
+  });
+
+  // DELETE EVENT
+  const container = document.querySelector("#artists");
+  container.addEventListener("click", async (event) => {
+    if (event.target.classList.contains("artist-delete-button")) {
+      const artistId = event.target.getAttribute("data-artist-id");
+      if (artistId) {
+        const confirmed = confirm("Are you sure you want to delete this artist?");
+        if (confirmed) {
+          const deleted = await REST.deleteArtist(artistId);
+          if (deleted) {
+            // Refresh the artist list
+            const updatedArtists = await REST.readArtists();
+            artistList.setList(updatedArtists);
+            artistList.render();
+          }
+        }
+      }
+    }
+  });
+
+  const artists = await REST.readArtists();
+  const albums = await REST.readAlbums();
+  const tracks = await REST.readTracks();
 
   const artistListRenderer = new ListRenderer(artists, "#artists", artistRenderer);
   const albumListRenderer = new ListRenderer(albums, "#albums", albumRenderer);
@@ -43,7 +77,7 @@ async function initApp() {
 
   trackListRenderer.render();
 
-  await updateArtistsGrid();
+  await REST.updateArtistsGrid();
 }
 
 function renderArtists(artists) {
@@ -73,4 +107,28 @@ function renderTracks(tracks) {
   }
 }
 
-export { artistRenderer, albumRenderer, trackRenderer, renderAlbums, renderArtists, renderTracks };
+async function createArtist(artist) {
+  try {
+    await REST.createArtist(artist);
+
+    const updatedArtists = await REST.readArtists();
+    artistList.setList(updatedArtists);
+    artistList.render();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function deleteArtist(artist) {
+  try {
+    await REST.deleteArtist(artist);
+
+    artists = await REST.readArtists();
+    artistList.setList(artist);
+    artistList.render();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export { artistRenderer, albumRenderer, trackRenderer, renderAlbums, renderArtists, renderTracks, createArtist, deleteArtist };
