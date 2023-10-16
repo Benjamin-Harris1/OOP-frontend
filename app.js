@@ -7,6 +7,7 @@ import TrackRenderer from "./view/renderer/trackrenderer.js";
 import ListRenderer from "./view/renderer/listrenderer.js";
 import ArtistCreateDialog from "./view/artistdialog/artistcreatedialog.js";
 import ArtistDeleteDialog from "./view/artistdialog/artistdeletedialog.js";
+import AlbumCreateDialog from "./view/albumdialog/albumcreatedialog.js";
 
 window.addEventListener("load", initApp);
 
@@ -15,9 +16,10 @@ const albumRenderer = new AlbumRenderer();
 const trackRenderer = new TrackRenderer();
 
 let artists = [];
-let artistList = new ListRenderer([], "#artists", artistRenderer);
 let albums = [];
 let tracks = [];
+let artistList = new ListRenderer([], "#artists", artistRenderer);
+let albumList = new ListRenderer([], "#albums", albumRenderer);
 let deleteDialog = null;
 
 async function initApp() {
@@ -31,11 +33,18 @@ async function initApp() {
   // EVENT LISTENERS
 
   // CREATE EVENT
-  const createButton = document.querySelector("#create-new-button");
+  const createArtistButton = document.querySelector("#create-artist-button");
   const artistCreateDialog = new ArtistCreateDialog("artist-create-dialog");
   artistCreateDialog.render();
-  createButton.addEventListener("click", () => {
+  createArtistButton.addEventListener("click", () => {
     artistCreateDialog.show();
+  });
+
+  const createAlbumButton = document.querySelector("#create-album-button");
+  const albumCreateDialog = new AlbumCreateDialog("album-create-dialog");
+  albumCreateDialog.render();
+  createAlbumButton.addEventListener("click", () => {
+    albumCreateDialog.show();
   });
 
   // DELETE EVENT
@@ -107,6 +116,7 @@ function renderTracks(tracks) {
   }
 }
 
+// ARTIST CREATE, UPDATE, DELETE
 async function createArtist(artist) {
   try {
     await REST.createArtist(artist);
@@ -131,4 +141,21 @@ async function deleteArtist(artist) {
   }
 }
 
-export { artistRenderer, albumRenderer, trackRenderer, renderAlbums, renderArtists, renderTracks, createArtist, deleteArtist };
+// ALBUM CREATE, UPDATE, DELETE
+async function createAlbum(album) {
+  try {
+    const response = await REST.createAlbum(album); // Make sure createAlbum in rest.js returns a promise
+    if (response) {
+      const updatedAlbums = await REST.readAlbums();
+      albumList.setList(updatedAlbums);
+      albumList.render();
+    } else {
+      // Handle creation failure
+      console.log("Album creation failed");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export { artistRenderer, albumRenderer, trackRenderer, renderAlbums, renderArtists, renderTracks, createArtist, deleteArtist, createAlbum };

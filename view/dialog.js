@@ -22,6 +22,9 @@ export default class Dialog {
     this.dialog.innerHTML = html;
     this.postRender();
   }
+  renderHTML() {
+    return "";
+  }
 
   postRender() {
     // Add eventlisteners to actions

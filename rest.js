@@ -8,6 +8,7 @@ import Track from "./model/track.js";
 const endpoint = "http://localhost:3000";
 
 let allArtists = [];
+let allAlbums = [];
 let lastFetch = 0;
 
 // FETCH ARTISTS
@@ -18,7 +19,11 @@ async function readArtists() {
   if (timePassed > 10_000) {
     await refetchArtists();
   }
-  return allArtists;
+  return allArtists.map((artist) => ({
+    id: artist.id,
+    name: artist.name,
+    career_start: artist.career_start,
+  }));
 }
 
 async function refetchArtists() {
@@ -31,11 +36,24 @@ async function refetchArtists() {
 
 // FETCH ALBUMS
 async function readAlbums() {
-  const response = await fetch(`${endpoint}/albums`);
-  const data = await response.json();
-  return data.map((albumData) => new Album(albumData));
+  const now = Date.now();
+  const timePassed = now - lastFetch;
+
+  if (timePassed > 10) {
+    await refetchAlbums();
+  }
+  return allAlbums;
 }
 
+async function refetchAlbums() {
+  const response = await fetch(`${endpoint}/albums`);
+  const originalAlbum = await response.json();
+  allAlbums = originalAlbum.map((albumData) => new Album(albumData));
+
+  lastFetch = Date.now();
+}
+
+// FETCH TRACKS
 async function readTracks() {
   const response = await fetch(`${endpoint}/tracks`);
   const data = await response.json();
@@ -106,9 +124,11 @@ async function createArtist(artist) {
     },
     body: json,
   });
-
+  console.log(response);
   await refetchArtists();
-  return response.ok;
+  if (response.ok) {
+    updateArtistsGrid();
+  }
 }
 
 async function updateArtist(artist) {
@@ -122,7 +142,9 @@ async function updateArtist(artist) {
   });
 
   await refetchArtists();
-  return response.ok;
+  if (response.ok) {
+    updateArtistsGrid();
+  }
 }
 
 async function deleteArtist(artist) {
@@ -134,4 +156,22 @@ async function deleteArtist(artist) {
   response.ok;
 }
 
-export { updateArtistsGrid, searchBackend, readAlbums, readArtists, readTracks, createArtist, updateArtist, deleteArtist };
+// ALBUM CREATE, UPDATE, DELETE
+
+async function createAlbum(album) {
+  const json = JSON.stringify(album);
+  const response = await fetch(`${endpoint}/albums`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: json,
+  });
+  console.log(response);
+  await refetchAlbums();
+  if (response.ok) {
+    updateArtistsGrid();
+  }
+}
+
+export { updateArtistsGrid, searchBackend, readAlbums, readArtists, readTracks, createArtist, updateArtist, deleteArtist, createAlbum };
