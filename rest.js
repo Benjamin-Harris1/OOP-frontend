@@ -174,4 +174,61 @@ async function createAlbum(album) {
   }
 }
 
-export { updateArtistsGrid, searchBackend, readAlbums, readArtists, readTracks, createArtist, updateArtist, deleteArtist, createAlbum };
+async function updateAlbum(album) {
+  const json = JSON.stringify(album);
+  const response = await fetch(`${endpoint}/albums${album.id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: json,
+  });
+
+  await refetchAlbums();
+  if (response.ok) {
+    updateArtistsGrid();
+  }
+}
+
+async function deleteAlbum(album) {
+  const response = await fetch(`${endpoint}/albums/${album.id}`, {
+    method: "DELETE",
+  });
+
+  await refetchAlbums();
+  if (response.ok) {
+    updateArtistsGrid();
+  }
+}
+
+// TRACK
+async function createTrack(track) {
+  const json = JSON.stringify(track);
+  const response = await fetch(`${endpoint}/tracks`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: json,
+  });
+  console.log(response);
+  await readTracks();
+  if (response.ok) {
+    updateArtistsGrid();
+  }
+}
+
+export {
+  updateArtistsGrid,
+  searchBackend,
+  readAlbums,
+  readArtists,
+  readTracks,
+  createArtist,
+  updateArtist,
+  deleteArtist,
+  createAlbum,
+  updateAlbum,
+  deleteAlbum,
+  createTrack,
+};
