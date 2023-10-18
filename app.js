@@ -72,24 +72,12 @@ async function initApp() {
   }
 
   function setUpDeleteEvent() {
-    const container = document.querySelector("#artists");
-    container.addEventListener("click", async (event) => {
-      if (event.target.classList.contains("artist-delete-button")) {
-        const artistId = event.target.getAttribute("data-artist-id");
-        if (artistId) {
-          const confirmed = confirm("Are you sure you want to delete this artist?");
-          if (confirmed) {
-            const deleted = await REST.deleteArtist(artistId);
-            if (deleted) {
-              // Refresh the artist list
-              const updatedArtists = await REST.readArtists();
-              artistList.setList(updatedArtists);
-              artistList.render();
-            }
-          }
-        }
-      }
-    });
+    // const deleteArtistButton = document.querySelector(".artist-delete-button");
+    // const deleteDialog = new ArtistDeleteDialog("artist-delete-dialog");
+    // deleteDialog.render();
+    // deleteArtistButton.addEventListener("click", () => {
+    //   deleteDialog.show();
+    // });
   }
 
   const artists = await REST.readArtists();
