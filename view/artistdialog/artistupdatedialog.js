@@ -1,6 +1,6 @@
-import Dialog from "../../dialog.js";
 import Artist from "../../model/artist.js";
 import * as controller from "../../../app.js";
+import Dialog from "../dialog.js";
 
 export default class ArtistUpdateDialog extends Dialog {
   renderHTML() {
@@ -25,6 +25,7 @@ export default class ArtistUpdateDialog extends Dialog {
     const form = this.dialog.querySelector("form");
     form.name.value = artist.name;
     form.career_start.value = artist.career_start;
+    console.log(this.artist);
   }
 
   update() {

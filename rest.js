@@ -13,51 +13,41 @@ let lastFetch = 0;
 
 // FETCH ARTISTS
 async function readArtists() {
-  const now = Date.now();
-  const timePassed = now - lastFetch;
-
-  if (timePassed > 10_000) {
-    await refetchArtists();
-  }
-  return allArtists.map((artist) => ({
-    id: artist.id,
-    name: artist.name,
-    career_start: artist.career_start,
-  }));
-}
-
-async function refetchArtists() {
   const response = await fetch(`${endpoint}/artists`);
-  const originalArtist = await response.json();
-  allArtists = originalArtist.map((jsonObj) => new Artist(jsonObj));
-
-  lastFetch = Date.now();
+  const artistData = await response.json();
+  return artistData.map(artist => {
+    return {
+      id: artist.id,
+      name: artist.name,
+      career_start: artist.career_start,
+    };
+  });
 }
 
 // FETCH ALBUMS
 async function readAlbums() {
-  const now = Date.now();
-  const timePassed = now - lastFetch;
-
-  if (timePassed > 10) {
-    await refetchAlbums();
-  }
-  return allAlbums;
-}
-
-async function refetchAlbums() {
   const response = await fetch(`${endpoint}/albums`);
-  const originalAlbum = await response.json();
-  allAlbums = originalAlbum.map((albumData) => new Album(albumData));
-
-  lastFetch = Date.now();
+  const albumData = await response.json();
+  return albumData.map(album => {
+    return {
+      id: album.id,
+      title: album.title,
+      release_date: album.release_date,
+    };
+  });
 }
 
 // FETCH TRACKS
 async function readTracks() {
   const response = await fetch(`${endpoint}/tracks`);
-  const data = await response.json();
-  return data.map((trackData) => new Track(trackData));
+  const trackData = await response.json();
+  return trackData.map(track => {
+    return {
+      id: track.id,
+      title: track.title,
+      duration: track.duration,
+    };
+  });
 }
 
 async function updateArtistsGrid() {
@@ -65,9 +55,9 @@ async function updateArtistsGrid() {
   const albumsData = await readAlbums();
   const tracksData = await readTracks();
 
-  const artists = artistsData.map((artistData) => new Artist(artistData));
-  const albums = albumsData.map((albumData) => new Album(albumData));
-  const tracks = tracksData.map((trackData) => new Track(trackData));
+  const artists = artistsData.map(artistData => new Artist(artistData));
+  const albums = albumsData.map(albumData => new Album(albumData));
+  const tracks = tracksData.map(trackData => new Track(trackData));
 
   renderArtists(artists, artistRenderer);
   renderAlbums(albums, albumRenderer);
@@ -153,7 +143,9 @@ async function deleteArtist(artist) {
   });
 
   await refetchArtists();
-  response.ok;
+  if (response.ok) {
+    updateArtistsGrid();
+  }
 }
 
 // ALBUM CREATE, UPDATE, DELETE
@@ -176,7 +168,7 @@ async function createAlbum(album) {
 
 async function updateAlbum(album) {
   const json = JSON.stringify(album);
-  const response = await fetch(`${endpoint}/albums${album.id}`, {
+  const response = await fetch(`${endpoint}/albums/${album.id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

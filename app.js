@@ -7,6 +7,7 @@ import TrackRenderer from "./view/renderer/trackrenderer.js";
 import ListRenderer from "./view/renderer/listrenderer.js";
 import ArtistCreateDialog from "./view/artistdialog/artistcreatedialog.js";
 import ArtistDeleteDialog from "./view/artistdialog/artistdeletedialog.js";
+import ArtistUpdateDialog from "./view/artistdialog/artistupdatedialog.js";
 import AlbumCreateDialog from "./view/albumdialog/albumcreatedialog.js";
 import TrackCreateDialog from "./view/trackdialog/trackcreatedialog.js";
 
@@ -44,6 +45,22 @@ async function initApp() {
   setUpCreateTrackDialog();
   setUpDeleteEvent();
 
+  // VIRKER IKKE
+  document.addEventListener("click", event => {
+    if (event.target.classList.contains("update-artist-button")) {
+      const artistId = event.target.getAttribute("data-artist-id");
+      openArtistUpdateDialog(artistId);
+    }
+  });
+
+  function openArtistUpdateDialog(artistId) {
+    // Create an instance of the ArtistUpdateDialog
+    const updateDialog = new ArtistUpdateDialog();
+    updateDialog.setArtist(artistId);
+    updateDialog.render();
+    updateDialog.show();
+  }
+
   function setUpCreateArtistDialog() {
     const createArtistButton = document.querySelector("#create-artist-button");
     const artistCreateDialog = new ArtistCreateDialog("artist-create-dialog");
@@ -80,9 +97,12 @@ async function initApp() {
     // });
   }
 
-  const artists = await REST.readArtists();
-  const albums = await REST.readAlbums();
-  const tracks = await REST.readTracks();
+  artists = await REST.readArtists();
+  console.log(artists);
+  albums = await REST.readAlbums();
+  console.log(albums);
+  tracks = await REST.readTracks();
+  console.log(tracks);
 
   const artistListRenderer = new ListRenderer(artists, "#artists", artistRenderer);
   const albumListRenderer = new ListRenderer(albums, "#albums", albumRenderer);

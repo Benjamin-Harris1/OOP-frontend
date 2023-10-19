@@ -8,7 +8,7 @@ export default class ArtistRenderer extends ItemRenderer {
       <div class="grid-item">
         <h2>${artist.name}</h2>
         <p>Career start: ${artist.career_start}</p>
-        <button class="artist-update-button" data-action="update">Update</button>
+       <button class="update-artist-button artist-update-button" data-action="update" data-artist-id="${artist.id}">Update</button>
         <button class="artist-delete-button" data-action="delete">🛒</button>
       </div>
     `;
