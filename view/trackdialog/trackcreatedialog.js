@@ -39,20 +39,18 @@ export default class TrackCreateDialog extends Dialog {
     const artists = await REST.readAlbumsArtists(selectedAlbumId);
     console.log(artists);
 
-
     // Filter artists based on the selected album ID
     const filteredArtists = artists.filter(artist => artist.album_id == selectedAlbumId);
-
 
     artistSelect.innerHTML = "";
 
     // Populate the select with artists based on album id
     filteredArtists.forEach(artist => {
       const option = document.createElement("option");
-      option.value = artist.artist_name;
+      option.value = artist.artist_id;
       option.textContent = artist.artist_name;
       artistSelect.appendChild(option);
-    })
+    });
   }
 
   renderHTML() {
