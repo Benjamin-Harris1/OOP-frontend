@@ -74,6 +74,7 @@ async function initApp() {
     const createAlbumButton = document.querySelector("#create-album-button");
     const albumCreateDialog = new AlbumCreateDialog("album-create-dialog");
     albumCreateDialog.render();
+    albumCreateDialog.populateArtistsDropdown();
     createAlbumButton.addEventListener("click", () => {
       albumCreateDialog.show();
     });
@@ -98,11 +99,8 @@ async function initApp() {
   }
 
   artists = await REST.readArtists();
-  console.log(artists);
   albums = await REST.readAlbums();
-  console.log(albums);
   tracks = await REST.readTracks();
-  console.log(tracks);
 
   const artistListRenderer = new ListRenderer(artists, "#artists", artistRenderer);
   const albumListRenderer = new ListRenderer(albums, "#albums", albumRenderer);
@@ -157,8 +155,8 @@ async function createArtist(artist) {
 
 async function updateArtist(artist) {
   try {
-    await RESTAPI.updateArtist(artist);
-    artists = await RESTAPI.readArtists();
+    await REST.updateArtist(artist);
+    artists = await REST.readArtists();
     artistList.setList(artists);
     artistList.render();
   } catch (error) {
