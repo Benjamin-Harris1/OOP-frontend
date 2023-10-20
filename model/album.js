@@ -3,7 +3,7 @@ export default class Album {
     this.title = obj.title;
     this.release_date = obj.release_date;
     this.id = obj.id;
-    // this.tracks = [];
+    this.artist_id = obj.artist_id;
   }
   addTrack(track) {
     this.tracks.push(track);
