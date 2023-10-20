@@ -115,7 +115,7 @@ async function createArtist(artist) {
     body: json,
   });
   console.log(response);
-  await refetchArtists();
+  await readArtists();
   if (response.ok) {
     updateArtistsGrid();
   }
@@ -131,7 +131,7 @@ async function updateArtist(artist) {
     body: json,
   });
 
-  await refetchArtists();
+  await readArtists();
   if (response.ok) {
     updateArtistsGrid();
   }
@@ -142,7 +142,7 @@ async function deleteArtist(artist) {
     method: "DELETE",
   });
 
-  await refetchArtists();
+  await readArtists();
   if (response.ok) {
     updateArtistsGrid();
   }
@@ -160,7 +160,7 @@ async function createAlbum(album) {
     body: json,
   });
   console.log(response);
-  await refetchAlbums();
+  await readAlbums();
   if (response.ok) {
     updateArtistsGrid();
   }
@@ -176,7 +176,7 @@ async function updateAlbum(album) {
     body: json,
   });
 
-  await refetchAlbums();
+  await readAlbums();
   if (response.ok) {
     updateArtistsGrid();
   }
@@ -187,7 +187,7 @@ async function deleteAlbum(album) {
     method: "DELETE",
   });
 
-  await refetchAlbums();
+  await readAlbums();
   if (response.ok) {
     updateArtistsGrid();
   }
