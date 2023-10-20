@@ -49,15 +49,17 @@ async function initApp() {
   document.addEventListener("click", event => {
     if (event.target.classList.contains("update-artist-button")) {
       const artistId = event.target.getAttribute("data-artist-id");
-      openArtistUpdateDialog(artistId);
+      const artistName = event.target.parentElement.querySelector("h2").getAttribute("data-artist-name");
+      const careerStart = event.target.parentElement.querySelector("p").getAttribute("data-career-start");
+      openArtistUpdateDialog(artistId, artistName, careerStart);
     }
   });
 
-  function openArtistUpdateDialog(artistId) {
+  function openArtistUpdateDialog(artistId, artistName, careerStart) {
     // Create an instance of the ArtistUpdateDialog
     const updateDialog = new ArtistUpdateDialog();
-    updateDialog.setArtist(artistId);
     updateDialog.render();
+    updateDialog.setArtist(artistId, artistName, careerStart);
     updateDialog.show();
   }
 

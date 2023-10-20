@@ -20,12 +20,13 @@ export default class ArtistUpdateDialog extends Dialog {
     return html;
   }
 
-  setArtist(artist) {
-    this.artist = artist;
+  setArtist(artistId, artistName, careerStart) {
+    this.artistId = artistId;
+    this.artistName = artistName;
+    this.careerStart = careerStart;
     const form = this.dialog.querySelector("form");
-    form.name.value = artist.name;
-    form.career_start.value = artist.career_start;
-    console.log(this.artist);
+    form.name.value = this.artistName;
+    form.career_start.value = this.careerStart;
   }
 
   update() {

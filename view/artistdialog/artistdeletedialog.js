@@ -16,7 +16,7 @@ export default class ArtistDeleteDialog extends Dialog {
     `;
     return html;
   }
-  setArtist(artist) {
+  setArtist(artist, artistName, careerStart) {
     this.artist = artist;
   }
 
