@@ -89,6 +89,11 @@ async function initApp() {
     createTrackButton.addEventListener("click", () => {
       trackCreateDialog.show();
     });
+
+    const albumSelect = trackCreateDialog.dialog.querySelector("#create-album-id");
+    albumSelect.addEventListener("change", async () => {
+      await trackCreateDialog.populateArtistsByAlbumDropdown();
+    })
   }
 
   function setUpDeleteEvent() {

@@ -27,6 +27,34 @@ export default class TrackCreateDialog extends Dialog {
     });
   }
 
+  async populateArtistsByAlbumDropdown() {
+    const form = this.dialog.querySelector("form");
+    const albumSelect = form.querySelector("#create-album-id");
+    const artistSelect = form.querySelector("#create-artist-id");
+
+    // Get the selected album id
+    const selectedAlbumId = albumSelect.value;
+
+    // Fetch artists from backend
+    const artists = await REST.readAlbumsArtists(selectedAlbumId);
+    console.log(artists);
+
+
+    // Filter artists based on the selected album ID
+    const filteredArtists = artists.filter(artist => artist.album_id == selectedAlbumId);
+
+
+    artistSelect.innerHTML = "";
+
+    // Populate the select with artists based on album id
+    filteredArtists.forEach(artist => {
+      const option = document.createElement("option");
+      option.value = artist.artist_name;
+      option.textContent = artist.artist_name;
+      artistSelect.appendChild(option);
+    })
+  }
+
   renderHTML() {
     const html =
       /*html*/
@@ -35,10 +63,12 @@ export default class TrackCreateDialog extends Dialog {
       <label for="create-title">Title:</label>
       <input type="text" id="create-title" name="title" placeholder="Type the title of the track here ...">
       <label for="create-duration">Duration:</label>
-      <input type="text" id="create-duration" name="duration" placeholder="Type the duration of the track here ...">
+      <input type="text" id="create-duration" name="duration" placeholder="Type the duration e.g. 4:19...">
       <label for="create-album-id">Albums:</label>
       <select id="create-album-id" name="album_id">
       </select>
+      <label for="create-artist-id">Artists</label>
+      <select id="create-artist-id" name="artist_id"></select>
       <button data-action="create">Create</button>
     </form>
         `;
@@ -49,7 +79,9 @@ export default class TrackCreateDialog extends Dialog {
     const form = this.dialog.querySelector("form");
     this.track = new Track({
       title: form.title.value,
-      duartion: form.duration.value,
+      duration: form.duration.value,
+      album_id: form.album_id.value,
+      artist_id: form.artist_id.value,
     });
 
     form.reset();

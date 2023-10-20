@@ -50,6 +50,19 @@ async function readTracks() {
   });
 }
 
+// FETACH ALBUMS_ARTISTS 
+async function readAlbumsArtists(artistAlbumId) {
+  const response = await fetch(`${endpoint}/albumsArtists`);
+  const albumArtistData = await response.json();
+  return albumArtistData.map(albumArtist => {
+    return {
+      artist_id: albumArtist.artist_id,
+      artist_name: albumArtist.artist_name,
+      album_id: albumArtist.album_id,
+    };
+  });
+}
+
 async function updateArtistsGrid() {
   const artistsData = await readArtists();
   const albumsData = await readAlbums();
@@ -216,6 +229,7 @@ export {
   readAlbums,
   readArtists,
   readTracks,
+  readAlbumsArtists,
   createArtist,
   updateArtist,
   deleteArtist,
