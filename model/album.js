@@ -5,7 +5,4 @@ export default class Album {
     this.id = obj.id;
     this.artist_id = obj.artist_id;
   }
-  addTrack(track) {
-    this.tracks.push(track);
-  }
 }

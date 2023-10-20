@@ -3,9 +3,6 @@ export default class Track {
     this.title = obj.title;
     this.duration = obj.duration;
     this.id = obj.id;
-    // this.artists = [];
-  }
-  addArtist(artist) {
-    this.artists.push(artist);
+    this.album_id = obj.album_id;
   }
 }

@@ -123,7 +123,7 @@ async function createArtist(artist) {
 
 async function updateArtist(artist) {
   const json = JSON.stringify(artist);
-  const response = await fetch(`${endpoint}/artists`, {
+  const response = await fetch(`${endpoint}/artists/${artist.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

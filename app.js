@@ -45,7 +45,6 @@ async function initApp() {
   setUpCreateTrackDialog();
   setUpDeleteEvent();
 
-  // VIRKER IKKE
   document.addEventListener("click", event => {
     if (event.target.classList.contains("update-artist-button")) {
       const artistId = event.target.getAttribute("data-artist-id");
@@ -86,6 +85,7 @@ async function initApp() {
     const createTrackButton = document.querySelector("#create-track-button");
     const trackCreateDialog = new TrackCreateDialog("track-create-dialog");
     trackCreateDialog.render();
+    trackCreateDialog.populateAlbumsDropdown();
     createTrackButton.addEventListener("click", () => {
       trackCreateDialog.show();
     });

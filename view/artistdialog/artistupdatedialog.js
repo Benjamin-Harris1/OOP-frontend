@@ -31,11 +31,13 @@ export default class ArtistUpdateDialog extends Dialog {
 
   update() {
     const form = this.dialog.querySelector("form");
+    const artist = new Artist({
+      id: this.artistId,
+      name: form.name.value,
+      career_start: form.career_start.value,
+    });
 
-    this.artist.name = form.name.value;
-    this.artist.career_start = form.career_start.value;
-
-    console.log("Update", this.artist);
-    controller.updateArtist(this.artist);
+    console.log("Update", artist);
+    controller.updateArtist(artist);
   }
 }
