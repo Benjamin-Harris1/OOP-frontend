@@ -12,9 +12,9 @@ export default class AlbumRenderer extends ItemRenderer {
     const html = /*html*/ `
   
       <div class="grid-item">
-        <h2>${album.title}</h2>
-        <p>Release date: ${formattedDate}</p>
-<button class="album-update-button" data-action="update">Update</button>
+        <h2 data-album-title="${album.title}">${album.title}</h2>
+        <p data-release-date="${album.release_date}">Release date: ${formattedDate}</p>
+<button class="update-album-button" data-action="update" data-album-id="${album.id}">Update</button>
 <button class="album-delete-button" data-album-id="${album.id}">🛒</button>
       </div>
     `;

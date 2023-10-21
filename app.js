@@ -10,6 +10,7 @@ import ArtistDeleteDialog from "./view/artistdialog/artistdeletedialog.js";
 import ArtistUpdateDialog from "./view/artistdialog/artistupdatedialog.js";
 import AlbumCreateDialog from "./view/albumdialog/albumcreatedialog.js";
 import TrackCreateDialog from "./view/trackdialog/trackcreatedialog.js";
+import AlbumUpdateDialog from "./view/albumdialog/albumupdatedialog.js";
 
 // INITIALIZE RENDERERS
 const artistRenderer = new ArtistRenderer();
@@ -45,6 +46,7 @@ async function initApp() {
   setUpCreateTrackDialog();
   setUpDeleteEvent();
 
+  // ARTIST UPDATE EVENT
   document.addEventListener("click", event => {
     if (event.target.classList.contains("update-artist-button")) {
       const artistId = event.target.getAttribute("data-artist-id");
@@ -59,6 +61,25 @@ async function initApp() {
     const updateDialog = new ArtistUpdateDialog();
     updateDialog.render();
     updateDialog.setArtist(artistId, artistName, careerStart);
+    updateDialog.show();
+  }
+
+  // ALBUM UPDATE EVENT
+  document.addEventListener("click", event => {
+    if (event.target.classList.contains("update-album-button")) {
+      console.log("click");
+      const albumId = event.target.getAttribute("data-album-id");
+      const albumTitle = event.target.parentElement.querySelector("h2").getAttribute("data-album-title");
+      const releaseDate = event.target.parentElement.querySelector("p").getAttribute("data-release-date");
+      openAlbumUpdateDialog(albumId, albumTitle, releaseDate);
+    }
+  });
+
+  async function openAlbumUpdateDialog(albumId, albumTitle, releaseDate) {
+    const updateDialog = new AlbumUpdateDialog();
+    updateDialog.render();
+    //updateDialog.getArtistId();
+    updateDialog.setAlbum(albumId, albumTitle, releaseDate);
     updateDialog.show();
   }
 
@@ -93,7 +114,7 @@ async function initApp() {
     const albumSelect = trackCreateDialog.dialog.querySelector("#create-album-id");
     albumSelect.addEventListener("change", async () => {
       await trackCreateDialog.populateArtistsByAlbumDropdown();
-    })
+    });
   }
 
   function setUpDeleteEvent() {
