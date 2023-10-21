@@ -8,19 +8,28 @@ export default class ArtistDeleteDialog extends Dialog {
       /*html*/
       `
             <h1>Delete artist?</h1>
-            <p>Are you sure you want to delete?</p>
             <form action="" method="dialog" id="delete-artist-form">
+            <p>Are you sure you want to delete?</p>
             <button type="button" data-action="cancel">Cancel</button>
             <button type="button" data-action="delete">Delete</button>
             </form>
     `;
     return html;
   }
-  setArtist(artist, artistName, careerStart) {
-    this.artist = artist;
+  setArtist(artistId, artistName, careerStart) {
+    this.artistId = artistId;
+    this.artistName = artistName
+    this.careerStart = careerStart;
+
+
   }
 
   delete() {
-    controller.deleteArtist(this.artist);
+    const artist = new Artist({
+      id: this.artistId,
+      name: this.artistName,
+      career_start: this.careerStart
+    });
+    controller.deleteArtist(artist);
   }
 }

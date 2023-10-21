@@ -9,8 +9,11 @@ import ArtistCreateDialog from "./view/artistdialog/artistcreatedialog.js";
 import ArtistDeleteDialog from "./view/artistdialog/artistdeletedialog.js";
 import ArtistUpdateDialog from "./view/artistdialog/artistupdatedialog.js";
 import AlbumCreateDialog from "./view/albumdialog/albumcreatedialog.js";
-import TrackCreateDialog from "./view/trackdialog/trackcreatedialog.js";
 import AlbumUpdateDialog from "./view/albumdialog/albumupdatedialog.js";
+import AlbumDeleteDialog from "./view/albumdialog/albumdeletedialog.js";
+import TrackCreateDialog from "./view/trackdialog/trackcreatedialog.js";
+import TrackUpdateDialog from "./view/trackdialog/trackupdatedialog.js";
+import TrackDeleteDialog from "./view/trackdialog/trackdeletedialog.js";
 
 // INITIALIZE RENDERERS
 const artistRenderer = new ArtistRenderer();
@@ -40,11 +43,11 @@ async function initApp() {
     searchBackend(query, artistListRenderer, albumListRenderer, trackListRenderer);
   });
 
-  //  EVENTS
+  //  EVENTS FOR CREATE BUTTONS
   setUpCreateArtistDialog();
   setUpCreateAlbumDialog();
   setUpCreateTrackDialog();
-  setUpDeleteEvent();
+  
 
   // ARTIST UPDATE EVENT
   document.addEventListener("click", event => {
@@ -69,20 +72,48 @@ async function initApp() {
     if (event.target.classList.contains("update-album-button")) {
       console.log("click");
       const albumId = event.target.getAttribute("data-album-id");
+      const artistId = event.target.getAttribute("data-artist-id");
       const albumTitle = event.target.parentElement.querySelector("h2").getAttribute("data-album-title");
       const releaseDate = event.target.parentElement.querySelector("p").getAttribute("data-release-date");
-      openAlbumUpdateDialog(albumId, albumTitle, releaseDate);
+      openAlbumUpdateDialog(albumId, albumTitle, releaseDate, artistId);
     }
   });
 
-  async function openAlbumUpdateDialog(albumId, albumTitle, releaseDate) {
+  async function openAlbumUpdateDialog(albumId, albumTitle, releaseDate, artistId) {
     const updateDialog = new AlbumUpdateDialog();
     updateDialog.render();
-    //updateDialog.getArtistId();
-    updateDialog.setAlbum(albumId, albumTitle, releaseDate);
+    const selectedArtistId = artistId;
+    updateDialog.populateArtistsDropdown(selectedArtistId)
+    updateDialog.setAlbum(albumId, albumTitle, releaseDate, artistId);
     updateDialog.show();
   }
 
+  // TRACK UPDATE EVENT
+  document.addEventListener("click", event => {
+    if (event.target.classList.contains("track-update-button")) {
+      const trackId = event.target.getAttribute("data-track-id");
+      const albumId = event.target.getAttribute("data-album-id");
+      const artistId = event.target.getAttribute("data-artist-id");
+      const trackTitle = event.target.parentElement.querySelector("h2").getAttribute("data-track-title");
+      const trackDuration = event.target.parentElement.querySelector("p").getAttribute("data-track-duration");
+      openTrackUpdateDialog(trackId, trackTitle, trackDuration, albumId, artistId);
+    }
+  });
+
+  async function openTrackUpdateDialog(trackId, trackTitle, trackDuration, albumId, artistId) {
+    const updateDialog = new TrackUpdateDialog();
+    updateDialog.render();
+    updateDialog.populateAlbumsDropdown();
+    updateDialog.setTrack(trackId, trackTitle, trackDuration, albumId, artistId);
+    updateDialog.show();
+    const albumSelect = updateDialog.dialog.querySelector("#update-album-id");
+    albumSelect.addEventListener("change", async () => {
+      await updateDialog.populateArtistsByAlbumDropdown();
+
+    })
+  }
+    
+ // EVENTS FOR CREATE BUTTONS
   function setUpCreateArtistDialog() {
     const createArtistButton = document.querySelector("#create-artist-button");
     const artistCreateDialog = new ArtistCreateDialog("artist-create-dialog");
@@ -117,14 +148,58 @@ async function initApp() {
     });
   }
 
-  function setUpDeleteEvent() {
-    // const deleteArtistButton = document.querySelector(".artist-delete-button");
-    // const deleteDialog = new ArtistDeleteDialog("artist-delete-dialog");
-    // deleteDialog.render();
-    // deleteArtistButton.addEventListener("click", () => {
-    //   deleteDialog.show();
-    // });
-  }
+// DELETE EVENTS
+
+// ARTIST DELETE EVENT
+document.addEventListener("click", event => {
+if (event.target.classList.contains("artist-delete-button")) {
+  const artistId = event.target.getAttribute("data-artist-id");
+  const artistName = event.target.parentElement.querySelector("h2").getAttribute("data-artist-name");
+  const careerStart = event.target.parentElement.querySelector("p").getAttribute("data-career-start");
+  openArtistDeleteDialog(artistId, artistName, careerStart);
+}
+});
+
+function openArtistDeleteDialog(artistId, artistName, careerStart) {
+  const deleteDialog = new ArtistDeleteDialog();
+  deleteDialog.render();
+  deleteDialog.setArtist(artistId, artistName, careerStart);
+  deleteDialog.show();
+}
+
+// ALBUM DELETE EVENT
+document.addEventListener("click", event => {
+if (event.target.classList.contains("album-delete-button")) {
+  const albumId = event.target.getAttribute("data-album-id");
+  const albumTitle = event.target.parentElement.querySelector("h2").getAttribute("data-album-title");
+  const releaseDate = event.target.parentElement.querySelector("p").getAttribute("data-release-date");
+  openAlbumDeleteDialog(albumId, albumTitle, releaseDate);
+}
+});
+
+function openAlbumDeleteDialog(albumId, albumTitle, releaseDate) {
+const deleteDialog = new AlbumDeleteDialog();
+deleteDialog.render();
+deleteDialog.setAlbum(albumId, albumTitle, releaseDate);
+deleteDialog.show();
+}
+
+// TRACK DELETE EVENT
+document.addEventListener("click", event => {
+if (event.target.classList.contains("track-delete-button")) {
+  const trackId = event.target.getAttribute("data-track-id");
+  const trackTitle = event.target.parentElement.querySelector("h2").getAttribute("data-track-title");
+  const trackDuration = event.target.parentElement.querySelector("p").getAttribute("data-track-duration");
+  openTrackDeleteDialog(trackId, trackTitle, trackDuration);
+}
+});
+
+function openTrackDeleteDialog(trackId, trackTitle, trackDuration) {
+const deleteDialog = new TrackDeleteDialog();
+deleteDialog.render();
+deleteDialog.setTrack(trackId, trackTitle, trackDuration);
+deleteDialog.show();
+}
 
   artists = await REST.readArtists();
   albums = await REST.readAlbums();
@@ -150,7 +225,7 @@ function renderArtists(artists) {
   }
 }
 
-function renderAlbums(albums) {
+async function renderAlbums(albums) {
   const container = document.querySelector("#albums");
   container.innerHTML = "";
   for (const album of albums) {
@@ -228,11 +303,16 @@ async function updateAlbum(album) {
   }
 }
 
-async function deleteAlbum() {
+async function deleteAlbum(album) {
+  try {
   await REST.deleteAlbum(album);
   albums = await REST.readAlbums();
-  albumList.setList(album);
+  albumList.setList(albums);
   albumList.render();
+}
+  catch (error) {
+    console.log(error);
+  }
 }
 
 async function createTrack(track) {
@@ -240,6 +320,28 @@ async function createTrack(track) {
     await REST.createTrack(track);
     const updatedTracks = await REST.readTracks();
     trackList.setList(updatedTracks);
+    trackList.render();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function updateTrack(track){
+  try {
+    await REST.updateTrack(track);
+    tracks = await REST.readTracks();
+    trackList.setList(tracks);
+    trackList.render();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function deleteTrack(track){
+  try {
+    await REST.deleteTrack(track);
+    tracks = await REST.readTracks();
+    trackList.setList(tracks);
     trackList.render();
   } catch (error) {
     console.log(error);
@@ -260,4 +362,6 @@ export {
   updateAlbum,
   deleteAlbum,
   createTrack,
+  updateTrack,
+  deleteTrack
 };

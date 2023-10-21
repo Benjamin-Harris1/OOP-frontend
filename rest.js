@@ -182,7 +182,7 @@ async function createAlbum(album) {
 async function updateAlbum(album) {
   const json = JSON.stringify(album);
   const response = await fetch(`${endpoint}/albums/${album.id}`, {
-    method: "DELETE",
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
@@ -223,6 +223,32 @@ async function createTrack(track) {
   }
 }
 
+async function updateTrack(track) {
+  const json = JSON.stringify(track);
+  const response = await fetch(`${endpoint}/tracks/${track.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: json,
+  });
+
+  await readTracks();
+  if (response.ok) {
+    updateArtistsGrid();
+  }
+}
+async function deleteTrack(track) {
+  const response = await fetch(`${endpoint}/tracks/${track.id}`, {
+    method: "DELETE",
+  });
+
+  await readTracks();
+  if (response.ok) {
+    updateArtistsGrid();
+  }
+}
+
 export {
   updateArtistsGrid,
   searchBackend,
@@ -237,4 +263,7 @@ export {
   updateAlbum,
   deleteAlbum,
   createTrack,
+  updateTrack,
+  deleteTrack,
+
 };

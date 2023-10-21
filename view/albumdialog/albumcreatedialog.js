@@ -14,7 +14,7 @@ export default class AlbumCreateDialog extends Dialog {
 
     // Fetch the artists from the backend
     const artists = await REST.readArtists();
-    console.log("Artists", artists);
+ 
 
     // Clear any existing options
     artistSelect.innerHTML = "";
