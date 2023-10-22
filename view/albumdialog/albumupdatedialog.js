@@ -4,9 +4,6 @@ import Dialog from "../dialog.js";
 import * as REST from "../../rest.js";
 
 export default class AlbumUpdateDialog extends Dialog {
-
-
-
   // KIG EVT. PÅ TRACKCREATE OG UPDATE OG SE HVORDAN DEN HAR BRUGT /albumsArtists routeren.
   async populateArtistsDropdown() {
     const form = this.dialog.querySelector("form");
@@ -20,14 +17,14 @@ export default class AlbumUpdateDialog extends Dialog {
     artistSelect.innerHTML = "";
 
     // Populate the select with the retrieved artists
-    artists.forEach(artist => {
+    artists.forEach((artist) => {
       const option = document.createElement("option");
       option.value = artist.artist_id;
       option.textContent = artist.artist_name;
       artistSelect.appendChild(option);
     });
-    
-    const selectedArtistId = artists.find(artist => artist.artist_id == this.albumId);
+
+    const selectedArtistId = artists.find((artist) => artist.artist_id == this.albumId);
     artistSelect.value = selectedArtistId.artist_id;
   }
 
@@ -35,6 +32,7 @@ export default class AlbumUpdateDialog extends Dialog {
     const html =
       /*html*/
       `
+        <button class="close-button" id="closeDialog">X</button>
       <h1>Update album</h1>
       <form action="" method="dialog" id="update-album-form">
       <label for="update-title">Title</label>

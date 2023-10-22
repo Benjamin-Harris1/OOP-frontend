@@ -7,6 +7,7 @@ export default class ArtistUpdateDialog extends Dialog {
     const html =
       /*html*/
       `
+      <button class="close-button" id="closeDialog">X</button>
             <h1>Update artist</h1>
          <form action="" method="dialog" id="update-artist-form">
       <label for="update-name">Name:</label>

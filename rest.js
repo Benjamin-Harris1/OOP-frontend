@@ -7,15 +7,15 @@ import Track from "./model/track.js";
 
 const endpoint = "https://musicdb-database-kea-benjamin.azurewebsites.net";
 
-let allArtists = [];
-let allAlbums = [];
-let lastFetch = 0;
+//let allArtists = [];
+//let allAlbums = [];
+//let lastFetch = 0;
 
 // FETCH ARTISTS
 async function readArtists() {
   const response = await fetch(`${endpoint}/artists`);
   const artistData = await response.json();
-  return artistData.map(artist => {
+  return artistData.map((artist) => {
     return {
       id: artist.id,
       name: artist.name,
@@ -28,7 +28,7 @@ async function readArtists() {
 async function readAlbums() {
   const response = await fetch(`${endpoint}/albums`);
   const albumData = await response.json();
-  return albumData.map(album => {
+  return albumData.map((album) => {
     return {
       id: album.id,
       title: album.title,
@@ -41,7 +41,7 @@ async function readAlbums() {
 async function readTracks() {
   const response = await fetch(`${endpoint}/tracks`);
   const trackData = await response.json();
-  return trackData.map(track => {
+  return trackData.map((track) => {
     return {
       id: track.id,
       title: track.title,
@@ -50,11 +50,11 @@ async function readTracks() {
   });
 }
 
-// FETACH ALBUMS_ARTISTS 
+// FETACH ALBUMS_ARTISTS
 async function readAlbumsArtists(artistAlbumId) {
   const response = await fetch(`${endpoint}/albumsArtists`);
   const albumArtistData = await response.json();
-  return albumArtistData.map(albumArtist => {
+  return albumArtistData.map((albumArtist) => {
     return {
       artist_id: albumArtist.artist_id,
       artist_name: albumArtist.artist_name,
@@ -67,7 +67,7 @@ async function readAlbumsArtists(artistAlbumId) {
 async function readAlbumsTracks(albumTrackId) {
   const response = await fetch(`${endpoint}/albumsTracks`);
   const albumTrackData = await response.json();
-  return albumTrackData.map(albumTrack => {
+  return albumTrackData.map((albumTrack) => {
     return {
       album_id: albumTrack.album_id,
       album_title: albumTrack.album_title,
@@ -81,9 +81,9 @@ async function updateArtistsGrid() {
   const albumsData = await readAlbums();
   const tracksData = await readTracks();
 
-  const artists = artistsData.map(artistData => new Artist(artistData));
-  const albums = albumsData.map(albumData => new Album(albumData));
-  const tracks = tracksData.map(trackData => new Track(trackData));
+  const artists = artistsData.map((artistData) => new Artist(artistData));
+  const albums = albumsData.map((albumData) => new Album(albumData));
+  const tracks = tracksData.map((trackData) => new Track(trackData));
 
   renderArtists(artists, artistRenderer);
   renderAlbums(albums, albumRenderer);
@@ -124,7 +124,6 @@ async function searchBackend(query, artistListRenderer, albumListRenderer, track
     artistListRenderer.render();
     albumListRenderer.render();
     trackListRenderer.render();
-
 
     renderArtists(filteredArtists);
     renderAlbums(filteredAlbums);
@@ -283,6 +282,5 @@ export {
   createTrack,
   updateTrack,
   deleteTrack,
-  readAlbumsTracks
-
+  readAlbumsTracks,
 };

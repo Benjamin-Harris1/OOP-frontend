@@ -14,13 +14,12 @@ export default class AlbumCreateDialog extends Dialog {
 
     // Fetch the artists from the backend
     const artists = await REST.readArtists();
- 
 
     // Clear any existing options
     artistSelect.innerHTML = "";
 
     // Populate the select with the retrieved artists
-    artists.forEach(artist => {
+    artists.forEach((artist) => {
       const option = document.createElement("option");
       option.value = artist.id;
       option.textContent = artist.name;
@@ -31,6 +30,7 @@ export default class AlbumCreateDialog extends Dialog {
   renderHTML() {
     const html = /*html*/ `
       <div>
+         <button class="close-button" id="closeDialog">X</button>
         <h2>Create Album</h2>
         <form action="" method="dialog" id="create-album-form">
           <label for="create-title">Title:</label>

@@ -47,10 +47,23 @@ async function initApp() {
   setUpCreateArtistDialog();
   setUpCreateAlbumDialog();
   setUpCreateTrackDialog();
-  
+
+  // OPEN DIALOG FUNCTION
+  // Open dialog function
+  function openDialog(dialog) {
+    dialog.show();
+    const closeDialogButton = dialog.getCloseButton(); // Make sure your dialog class has a method to get the close button
+
+    function closeDialogHandler() {
+      dialog.close();
+      closeDialogButton.removeEventListener("click", closeDialogHandler);
+    }
+
+    closeDialogButton.addEventListener("click", closeDialogHandler);
+  }
 
   // ARTIST UPDATE EVENT
-  document.addEventListener("click", event => {
+  document.addEventListener("click", (event) => {
     if (event.target.classList.contains("update-artist-button")) {
       const artistId = event.target.getAttribute("data-artist-id");
       const artistName = event.target.parentElement.querySelector("h2").getAttribute("data-artist-name");
@@ -59,16 +72,16 @@ async function initApp() {
     }
   });
 
+  // Open Artist Update Dialog function
   function openArtistUpdateDialog(artistId, artistName, careerStart) {
-    // Create an instance of the ArtistUpdateDialog
     const updateDialog = new ArtistUpdateDialog();
     updateDialog.render();
     updateDialog.setArtist(artistId, artistName, careerStart);
-    updateDialog.show();
+    openDialog(updateDialog);
   }
 
   // ALBUM UPDATE EVENT
-  document.addEventListener("click", event => {
+  document.addEventListener("click", (event) => {
     if (event.target.classList.contains("update-album-button")) {
       console.log("click");
       const albumId = event.target.getAttribute("data-album-id");
@@ -82,14 +95,14 @@ async function initApp() {
   async function openAlbumUpdateDialog(albumId, albumTitle, releaseDate, artistId) {
     const updateDialog = new AlbumUpdateDialog();
     updateDialog.render();
-   // const selectedArtistId = artistId;
-    updateDialog.populateArtistsDropdown()
+    // const selectedArtistId = artistId;
+    updateDialog.populateArtistsDropdown();
     updateDialog.setAlbum(albumId, albumTitle, releaseDate, artistId);
-    updateDialog.show();
+    openDialog(updateDialog);
   }
 
   // TRACK UPDATE EVENT
-  document.addEventListener("click", event => {
+  document.addEventListener("click", (event) => {
     if (event.target.classList.contains("track-update-button")) {
       const trackId = event.target.getAttribute("data-track-id");
       const albumId = event.target.getAttribute("data-album-id");
@@ -105,21 +118,20 @@ async function initApp() {
     updateDialog.render();
     updateDialog.populateAlbumsDropdown();
     updateDialog.setTrack(trackId, trackTitle, trackDuration, albumId, artistId);
-    updateDialog.show();
-   const albumSelect = updateDialog.dialog.querySelector("#update-album-id");
-  albumSelect.addEventListener("change", async () => {
-     await updateDialog.populateArtistsByAlbumDropdown();
-
-   })
+    openDialog(updateDialog);
+    const albumSelect = updateDialog.dialog.querySelector("#update-album-id");
+    albumSelect.addEventListener("change", async () => {
+      await updateDialog.populateArtistsByAlbumDropdown();
+    });
   }
-    
- // EVENTS FOR CREATE BUTTONS
+
+  // EVENTS FOR CREATE BUTTONS
   function setUpCreateArtistDialog() {
     const createArtistButton = document.querySelector("#create-artist-button");
     const artistCreateDialog = new ArtistCreateDialog("artist-create-dialog");
     artistCreateDialog.render();
     createArtistButton.addEventListener("click", () => {
-      artistCreateDialog.show();
+      openDialog(artistCreateDialog);
     });
   }
 
@@ -129,7 +141,7 @@ async function initApp() {
     albumCreateDialog.render();
     albumCreateDialog.populateArtistsDropdown();
     createAlbumButton.addEventListener("click", () => {
-      albumCreateDialog.show();
+      openDialog(albumCreateDialog);
     });
   }
 
@@ -139,7 +151,7 @@ async function initApp() {
     trackCreateDialog.render();
     trackCreateDialog.populateAlbumsDropdown();
     createTrackButton.addEventListener("click", () => {
-      trackCreateDialog.show();
+      openDialog(trackCreateDialog);
     });
 
     const albumSelect = trackCreateDialog.dialog.querySelector("#create-album-id");
@@ -148,58 +160,56 @@ async function initApp() {
     });
   }
 
-// DELETE EVENTS
+  // ARTIST DELETE EVENT
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("artist-delete-button")) {
+      const artistId = event.target.getAttribute("data-artist-id");
+      const artistName = event.target.parentElement.querySelector("h2").getAttribute("data-artist-name");
+      const careerStart = event.target.parentElement.querySelector("p").getAttribute("data-career-start");
+      openArtistDeleteDialog(artistId, artistName, careerStart);
+    }
+  });
 
-// ARTIST DELETE EVENT
-document.addEventListener("click", event => {
-if (event.target.classList.contains("artist-delete-button")) {
-  const artistId = event.target.getAttribute("data-artist-id");
-  const artistName = event.target.parentElement.querySelector("h2").getAttribute("data-artist-name");
-  const careerStart = event.target.parentElement.querySelector("p").getAttribute("data-career-start");
-  openArtistDeleteDialog(artistId, artistName, careerStart);
-}
-});
+  function openArtistDeleteDialog(artistId, artistName, careerStart) {
+    const deleteDialog = new ArtistDeleteDialog();
+    deleteDialog.render();
+    deleteDialog.setArtist(artistId, artistName, careerStart);
+    deleteDialog.show();
+  }
 
-function openArtistDeleteDialog(artistId, artistName, careerStart) {
-  const deleteDialog = new ArtistDeleteDialog();
-  deleteDialog.render();
-  deleteDialog.setArtist(artistId, artistName, careerStart);
-  deleteDialog.show();
-}
+  // ALBUM DELETE EVENT
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("album-delete-button")) {
+      const albumId = event.target.getAttribute("data-album-id");
+      const albumTitle = event.target.parentElement.querySelector("h2").getAttribute("data-album-title");
+      const releaseDate = event.target.parentElement.querySelector("p").getAttribute("data-release-date");
+      openAlbumDeleteDialog(albumId, albumTitle, releaseDate);
+    }
+  });
 
-// ALBUM DELETE EVENT
-document.addEventListener("click", event => {
-if (event.target.classList.contains("album-delete-button")) {
-  const albumId = event.target.getAttribute("data-album-id");
-  const albumTitle = event.target.parentElement.querySelector("h2").getAttribute("data-album-title");
-  const releaseDate = event.target.parentElement.querySelector("p").getAttribute("data-release-date");
-  openAlbumDeleteDialog(albumId, albumTitle, releaseDate);
-}
-});
+  function openAlbumDeleteDialog(albumId, albumTitle, releaseDate) {
+    const deleteDialog = new AlbumDeleteDialog();
+    deleteDialog.render();
+    deleteDialog.setAlbum(albumId, albumTitle, releaseDate);
+    deleteDialog.show();
+  }
 
-function openAlbumDeleteDialog(albumId, albumTitle, releaseDate) {
-const deleteDialog = new AlbumDeleteDialog();
-deleteDialog.render();
-deleteDialog.setAlbum(albumId, albumTitle, releaseDate);
-deleteDialog.show();
-}
+  // TRACK DELETE EVENT
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("track-delete-button")) {
+      const trackId = event.target.getAttribute("data-track-id");
+      const trackTitle = event.target.parentElement.querySelector("h2").getAttribute("data-track-title");
+      const trackDuration = event.target.parentElement.querySelector("p").getAttribute("data-track-duration");
+      openTrackDeleteDialog(trackId, trackTitle, trackDuration);
+    }
+  });
 
-// TRACK DELETE EVENT
-document.addEventListener("click", event => {
-if (event.target.classList.contains("track-delete-button")) {
-  const trackId = event.target.getAttribute("data-track-id");
-  const trackTitle = event.target.parentElement.querySelector("h2").getAttribute("data-track-title");
-  const trackDuration = event.target.parentElement.querySelector("p").getAttribute("data-track-duration");
-  openTrackDeleteDialog(trackId, trackTitle, trackDuration);
-}
-});
-
-function openTrackDeleteDialog(trackId, trackTitle, trackDuration) {
-const deleteDialog = new TrackDeleteDialog();
-deleteDialog.render();
-deleteDialog.setTrack(trackId, trackTitle, trackDuration);
-deleteDialog.show();
-}
+  function openTrackDeleteDialog(trackId, trackTitle, trackDuration) {
+    const deleteDialog = new TrackDeleteDialog();
+    deleteDialog.render();
+    deleteDialog.setTrack(trackId, trackTitle, trackDuration);
+    deleteDialog.show();
+  }
 
   artists = await REST.readArtists();
   albums = await REST.readAlbums();
@@ -217,6 +227,7 @@ deleteDialog.show();
 }
 
 function renderArtists(artists) {
+  artists.sort((a, b) => a.name.localeCompare(b.name));
   const container = document.querySelector("#artists");
   container.innerHTML = "";
   for (const artist of artists) {
@@ -226,6 +237,7 @@ function renderArtists(artists) {
 }
 
 async function renderAlbums(albums) {
+  albums.sort((a, b) => a.title.localeCompare(b.title));
   const container = document.querySelector("#albums");
   container.innerHTML = "";
   for (const album of albums) {
@@ -235,6 +247,7 @@ async function renderAlbums(albums) {
 }
 
 function renderTracks(tracks) {
+  tracks.sort((a, b) => a.title.localeCompare(b.title));
   const container = document.querySelector("#tracks");
   container.innerHTML = "";
   for (const track of tracks) {
@@ -305,12 +318,11 @@ async function updateAlbum(album) {
 
 async function deleteAlbum(album) {
   try {
-  await REST.deleteAlbum(album);
-  albums = await REST.readAlbums();
-  albumList.setList(albums);
-  albumList.render();
-}
-  catch (error) {
+    await REST.deleteAlbum(album);
+    albums = await REST.readAlbums();
+    albumList.setList(albums);
+    albumList.render();
+  } catch (error) {
     console.log(error);
   }
 }
@@ -326,7 +338,7 @@ async function createTrack(track) {
   }
 }
 
-async function updateTrack(track){
+async function updateTrack(track) {
   try {
     await REST.updateTrack(track);
     tracks = await REST.readTracks();
@@ -337,7 +349,7 @@ async function updateTrack(track){
   }
 }
 
-async function deleteTrack(track){
+async function deleteTrack(track) {
   try {
     await REST.deleteTrack(track);
     tracks = await REST.readTracks();
@@ -363,5 +375,5 @@ export {
   deleteAlbum,
   createTrack,
   updateTrack,
-  deleteTrack
+  deleteTrack,
 };

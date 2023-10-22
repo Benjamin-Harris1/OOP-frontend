@@ -5,6 +5,7 @@ import * as controller from "../../app.js";
 export default class ArtistCreateDialog extends Dialog {
   renderHTML() {
     const html = /*html*/ `
+   <button class="close-button" id="closeDialog">X</button>
     <h1>Create artist</h1>
     <form action="" method="dialog" id="create-artist-form">
       <label for="create-name">Name:</label>

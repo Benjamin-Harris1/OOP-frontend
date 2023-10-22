@@ -15,7 +15,6 @@ export default class ListRenderer {
   }
 
   setList(list) {
-    // Build a list of renderers with items in them
     this.list = list.map((item) => new ItemRenderer(item));
   }
 
@@ -24,10 +23,5 @@ export default class ListRenderer {
   }
   render() {
     this.clear();
-
-    // for (const itemRenderer of this.list) {
-    //   const html = itemRenderer.render();
-    //   this.container.insertAdjacentHTML("beforeend", html);
-    // }
   }
 }

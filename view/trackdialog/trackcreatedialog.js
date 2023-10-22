@@ -19,7 +19,7 @@ export default class TrackCreateDialog extends Dialog {
     albumSelect.innerHTML = "";
 
     // Populate the select with albums
-    albums.forEach(album => {
+    albums.forEach((album) => {
       const option = document.createElement("option");
       option.value = album.id;
       option.textContent = album.title;
@@ -40,12 +40,12 @@ export default class TrackCreateDialog extends Dialog {
     console.log(artists);
 
     // Filter artists based on the selected album ID
-    const filteredArtists = artists.filter(artist => artist.album_id == selectedAlbumId);
+    const filteredArtists = artists.filter((artist) => artist.album_id == selectedAlbumId);
 
     artistSelect.innerHTML = "";
 
     // Populate the select with artists based on album id
-    filteredArtists.forEach(artist => {
+    filteredArtists.forEach((artist) => {
       const option = document.createElement("option");
       option.value = artist.artist_id;
       option.textContent = artist.artist_name;
@@ -56,7 +56,9 @@ export default class TrackCreateDialog extends Dialog {
   renderHTML() {
     const html =
       /*html*/
-      ` <h1>Create track</h1>
+      `
+      <button class="close-button" id="closeDialog">X</button>
+      <h1>Create track</h1>
     <form action="" method="dialog" id="create-track-form">
       <label for="create-title">Title:</label>
       <input type="text" id="create-title" name="title" placeholder="Type the title of the track here ...">

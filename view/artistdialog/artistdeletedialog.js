@@ -18,18 +18,17 @@ export default class ArtistDeleteDialog extends Dialog {
   }
   setArtist(artistId, artistName, careerStart) {
     this.artistId = artistId;
-    this.artistName = artistName
+    this.artistName = artistName;
     this.careerStart = careerStart;
-
-
   }
 
   delete() {
     const artist = new Artist({
       id: this.artistId,
       name: this.artistName,
-      career_start: this.careerStart
+      career_start: this.careerStart,
     });
+    this.dialog.close();
     controller.deleteArtist(artist);
   }
 }

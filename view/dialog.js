@@ -26,6 +26,10 @@ export default class Dialog {
     return "";
   }
 
+  getCloseButton() {
+    return this.dialog.querySelector("#closeDialog");
+  }
+
   postRender() {
     // Add eventlisteners to actions
     this.dialog.querySelectorAll("[data-action]").forEach((element) =>
