@@ -40,7 +40,7 @@ async function initApp() {
   const searchInput = document.querySelector("#searchbar");
   searchInput.addEventListener("input", () => {
     const query = searchInput.value;
-    searchBackend(query, artistListRenderer, albumListRenderer, trackListRenderer);
+    REST.searchBackend(query, artistListRenderer, albumListRenderer, trackListRenderer);
   });
 
   //  EVENTS FOR CREATE BUTTONS
@@ -82,8 +82,8 @@ async function initApp() {
   async function openAlbumUpdateDialog(albumId, albumTitle, releaseDate, artistId) {
     const updateDialog = new AlbumUpdateDialog();
     updateDialog.render();
-    const selectedArtistId = artistId;
-    updateDialog.populateArtistsDropdown(selectedArtistId)
+   // const selectedArtistId = artistId;
+    updateDialog.populateArtistsDropdown()
     updateDialog.setAlbum(albumId, albumTitle, releaseDate, artistId);
     updateDialog.show();
   }
@@ -106,11 +106,11 @@ async function initApp() {
     updateDialog.populateAlbumsDropdown();
     updateDialog.setTrack(trackId, trackTitle, trackDuration, albumId, artistId);
     updateDialog.show();
-    const albumSelect = updateDialog.dialog.querySelector("#update-album-id");
-    albumSelect.addEventListener("change", async () => {
-      await updateDialog.populateArtistsByAlbumDropdown();
+   const albumSelect = updateDialog.dialog.querySelector("#update-album-id");
+  albumSelect.addEventListener("change", async () => {
+     await updateDialog.populateArtistsByAlbumDropdown();
 
-    })
+   })
   }
     
  // EVENTS FOR CREATE BUTTONS
@@ -272,7 +272,7 @@ async function deleteArtist(artist) {
     await REST.deleteArtist(artist);
 
     artists = await REST.readArtists();
-    artistList.setList(artist);
+    artistList.setList(artists);
     artistList.render();
   } catch (error) {
     console.log(error);

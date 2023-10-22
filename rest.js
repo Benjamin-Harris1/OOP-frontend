@@ -63,6 +63,19 @@ async function readAlbumsArtists(artistAlbumId) {
   });
 }
 
+// FETCH ALBUMS_TRACKS
+async function readAlbumsTracks(albumTrackId) {
+  const response = await fetch(`${endpoint}/albumsTracks`);
+  const albumTrackData = await response.json();
+  return albumTrackData.map(albumTrack => {
+    return {
+      album_id: albumTrack.album_id,
+      album_title: albumTrack.album_title,
+      track_id: albumTrack.track_id,
+    };
+  });
+}
+
 async function updateArtistsGrid() {
   const artistsData = await readArtists();
   const albumsData = await readAlbums();
@@ -111,6 +124,11 @@ async function searchBackend(query, artistListRenderer, albumListRenderer, track
     artistListRenderer.render();
     albumListRenderer.render();
     trackListRenderer.render();
+
+
+    renderArtists(filteredArtists);
+    renderAlbums(filteredAlbums);
+    renderTracks(filteredTracks);
   } else {
     console.log("Invalid search results data");
   }
@@ -265,5 +283,6 @@ export {
   createTrack,
   updateTrack,
   deleteTrack,
+  readAlbumsTracks
 
 };

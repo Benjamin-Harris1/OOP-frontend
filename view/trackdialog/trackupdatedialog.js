@@ -5,23 +5,43 @@ import * as REST from "../../rest.js";
 
 export default class TrackUpdateDialog extends Dialog {
 
-
     async populateAlbumsDropdown(){
         const form = this.dialog.querySelector("form");
         const albumSelect = form.querySelector("#update-album-id");
+        const artistSelect = form.querySelector("#update-artist-id");
 
         // Fetch albums from backend
-        const albums = await REST.readAlbums();
-
+        const albums = await REST.readAlbumsTracks();
+        
+        
         // Clear existing options
-       albumSelect.innerHTML = "";
-
+        albumSelect.innerHTML = "";
+     
+        
         // Populate the select with albums
         albums.forEach(album => {
             const option = document.createElement("option");
-            option.value = album.id;
-            option.textContent = album.title;
+            option.value = album.album_id;
+            option.textContent = album.album_title;
             albumSelect.appendChild(option);
+        });
+        
+        const selectedAlbumId = albums.find(album => album.album_id == this.trackId);
+        albumSelect.value = selectedAlbumId.album_id;
+        
+
+        const artists = await REST.readAlbumsArtists();
+
+        const filteredArtists = artists.filter(artist => artist.artist_id == selectedAlbumId.album_id);
+
+        artistSelect.innerHTML = "";
+
+        // Populate the select with artists based on album id
+        filteredArtists.forEach(artist => {
+            const option = document.createElement("option");
+            option.value = artist.artist_id;
+            option.textContent = artist.artist_name;
+            artistSelect.appendChild(option);
         });
     }
 

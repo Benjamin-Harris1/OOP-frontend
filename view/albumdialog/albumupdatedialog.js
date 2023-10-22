@@ -13,7 +13,7 @@ export default class AlbumUpdateDialog extends Dialog {
     const artistSelect = form.querySelector("#create-artist-id");
 
     // Fetch the artists from the backend
-    const artists = await REST.readArtists();
+    const artists = await REST.readAlbumsArtists();
     console.log("Artists", artists);
 
     // Clear any existing options
@@ -22,11 +22,13 @@ export default class AlbumUpdateDialog extends Dialog {
     // Populate the select with the retrieved artists
     artists.forEach(artist => {
       const option = document.createElement("option");
-      option.value = artist.id;
-      option.textContent = artist.name;
+      option.value = artist.artist_id;
+      option.textContent = artist.artist_name;
       artistSelect.appendChild(option);
     });
-
+    
+    const selectedArtistId = artists.find(artist => artist.artist_id == this.albumId);
+    artistSelect.value = selectedArtistId.artist_id;
   }
 
   renderHTML() {

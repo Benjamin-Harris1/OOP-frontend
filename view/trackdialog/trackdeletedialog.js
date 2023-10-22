@@ -33,7 +33,7 @@ export default class TrackDeleteDialog extends Dialog {
             artist_id: this.artistId
         });
     
-        form.reset();
+        //form.reset();
         controller.deleteTrack(track);
     }
 }
