@@ -81,7 +81,8 @@ p {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   padding: 0.5em 1em;
-  max-width: 380px;
+  width: 7.5%;
+  max-width: 320px;
   border-radius: 3%;
   border: 2px solid black;
 }
@@ -105,7 +106,7 @@ p {
 dialog {
   border-color: var(--navy);
   position: fixed;
-  top: 90vh;
+ 
   max-height: 88vh;
   left: 30%;
   transform: translate(-50%, -50%);
@@ -136,7 +137,17 @@ button{
   border: 2px solid black;
 }
 
-#create-track-form, #update-track-form, #create-artist-form, #update-artist-form, #create-album-form, #update-album-form {
+ #create-artist-form, #update-artist-form, #create-album-form, #update-album-form {
+  padding: 1em 2em;
+  font-size: larger;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  text-align: left;
+  align-items: center;
+  gap: 3px;
+}
+
+#create-track-form, #update-track-form{
   padding: 1em 2em;
   font-size: larger;
   display: grid;
@@ -152,4 +163,30 @@ button{
   font-size: larger;
 
   grid-template-columns: 1fr 2fr;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.update-album-button, .album-delete-button, .update-artist-button, .artist-delete-button, .track-update-button, .delete-track-button {
+  font-weight: 300;
+  font-size: 0.8em;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid;
+  color: var(--text-color-light);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.4em 0.7em;
+  max-width: 380px;
+  border-radius: 3%;
+  border: 1.5px solid black;
+  margin: 0 auto; /* Add this line to center the buttons */
 }

@@ -54,6 +54,7 @@ export default class TrackUpdateDialog extends Dialog {
     const artists = await REST.readAlbumsArtists(selectedAlbumId);
     console.log(artists);
 
+    // FLAW IN MY LOGIC HERE ASWELL - WANT TO LINK THE ARTISTS/ALBUMS/TRACKS TOGETHER WITH SOME SQL RATHER THAN BY MATCHING ID.
     // Filter artists based on the selected album ID
     const filteredArtists = artists.filter((artist) => artist.album_id == selectedAlbumId);
 

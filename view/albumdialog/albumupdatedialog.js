@@ -11,7 +11,6 @@ export default class AlbumUpdateDialog extends Dialog {
 
     // Fetch the artists from the backend
     const artists = await REST.readAlbumsArtists();
-    console.log("Artists", artists);
 
     // Clear any existing options
     artistSelect.innerHTML = "";
@@ -24,6 +23,7 @@ export default class AlbumUpdateDialog extends Dialog {
       artistSelect.appendChild(option);
     });
 
+    // FLAW IN THE LOGIC HERE - I WANT TO LINK THE ARTIST NOT BASED ON IF THE ID IS EQUAL, BUT SOMETHING ELSE
     const selectedArtistId = artists.find((artist) => artist.artist_id == this.albumId);
     artistSelect.value = selectedArtistId.artist_id;
   }

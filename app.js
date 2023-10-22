@@ -83,7 +83,6 @@ async function initApp() {
   // ALBUM UPDATE EVENT
   document.addEventListener("click", (event) => {
     if (event.target.classList.contains("update-album-button")) {
-      console.log("click");
       const albumId = event.target.getAttribute("data-album-id");
       const artistId = event.target.getAttribute("data-artist-id");
       const albumTitle = event.target.parentElement.querySelector("h2").getAttribute("data-album-title");
