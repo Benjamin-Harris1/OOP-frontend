@@ -1,6 +1,6 @@
 import Dialog from "../dialog.js";
 import Track from "../../model/track.js";
-import * as controller from "../../docs/app.js";
+import * as controller from "../../app.js";
 
 export default class TrackDeleteDialog extends Dialog {
   renderHTML() {
