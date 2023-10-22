@@ -1,6 +1,6 @@
 import Artist from "../../model/artist.js";
-import * as controller from "../../../app.js";
 import Dialog from "../dialog.js";
+import * as controller from "../../../app.js";
 
 export default class ArtistUpdateDialog extends Dialog {
   renderHTML() {
