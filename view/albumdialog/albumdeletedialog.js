@@ -9,7 +9,7 @@ export default class AlbumDeleteDialog extends Dialog {
       `
         <h1>Delete album?</h1>
         <form action="" method="dialog" id="delete-album-form">
-        <p>Are you sure you want to delete?</p>
+        <p>Are you sure you want to delete this album?</p>
         <button type="button" data-action="cancel">Cancel</button>
         <button type="button" data-action="delete">Delete</button>
         </form>

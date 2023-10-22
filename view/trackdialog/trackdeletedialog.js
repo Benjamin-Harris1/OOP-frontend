@@ -9,7 +9,7 @@ export default class TrackDeleteDialog extends Dialog {
       `
         <h1>Delete track?</h1>
         <form action="" method="dialog" id="delete-track-form">
-        <p>Are you sure you want to delete?</p>
+        <p>Are you sure you want to delete this track?</p>
         <button type="button" data-action="cancel">Cancel</button>
         <button type="button" data-action="delete">Delete</button>
         </form>

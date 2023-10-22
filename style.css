@@ -70,3 +70,86 @@ p {
   padding: 0.5em;
   border: 2px solid black;
 }
+
+#create-artist-button, #create-album-button, #create-track-button{
+  margin-left: 0.9%;
+  font-weight: 300;
+  font-size: 0.8em;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.5em 1em;
+  max-width: 380px;
+  border-radius: 3%;
+  border: 2px solid black;
+}
+
+.update-artist-button, .artist-delete-button, .update-album-button, .album-delete-button, .track-update-button, .track-delete-button {
+  font-weight: 300;
+  font-size: 0.8em;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid;
+  color: var(--text-color-light);
+
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.4em 0.7em;
+  max-width: 380px;
+  border-radius: 3%;
+  border: 2px solid black;
+}
+
+dialog {
+  border-color: var(--navy);
+  position: fixed;
+  top: 90vh;
+  max-height: 88vh;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+}
+
+h1{
+  text-align: center;
+}
+
+button{
+  font-weight: 300;
+  font-size: 0.8em;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid;
+  color: var(--text-color-light);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.4em 0.7em;
+  max-width: 380px;
+  border-radius: 3%;
+  border: 2px solid black;
+}
+
+#create-track-form, #update-track-form, #create-artist-form, #update-artist-form, #create-album-form, #update-album-form {
+  padding: 1em 2em;
+  font-size: larger;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  text-align: left;
+  align-items: center;
+  gap: 3px;
+}
+
+#delete-track-form, #delete-artist-form, #delete-album-form{
+  padding: 1em 3em 2em;
+
+  font-size: larger;
+
+  grid-template-columns: 1fr 2fr;
+}
