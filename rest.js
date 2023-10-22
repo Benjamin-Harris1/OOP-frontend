@@ -5,7 +5,7 @@ import Artist from "./model/artist.js";
 import Album from "./model/album.js";
 import Track from "./model/track.js";
 
-const endpoint = "http://localhost:3000";
+const endpoint = "https://musicdb-database-kea-benjamin.azurewebsites.net";
 
 let allArtists = [];
 let allAlbums = [];
