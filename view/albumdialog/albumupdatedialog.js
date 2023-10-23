@@ -1,5 +1,5 @@
 import Album from "../../model/album.js";
-import * as controller from "../../../app.js";
+import * as controller from "../../app.js";
 import Dialog from "../dialog.js";
 import * as REST from "../../rest.js";
 
