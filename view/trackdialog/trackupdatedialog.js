@@ -9,13 +9,13 @@ export default class TrackUpdateDialog extends Dialog {
     const albumSelect = form.querySelector("#update-album-id");
     const artistSelect = form.querySelector("#update-artist-id");
 
-    // Fetch albums from backend
+    // FETCH ALBUMS FROM BACKEND
     const albums = await REST.readAlbumsTracks();
 
-    // Clear existing options
+    // CLEAR HTML
     albumSelect.innerHTML = "";
 
-    // Populate the select with albums
+    // POPULATE WITH RETRIEVED ARRAY
     albums.forEach((album) => {
       const option = document.createElement("option");
       option.value = album.album_id;
@@ -32,7 +32,7 @@ export default class TrackUpdateDialog extends Dialog {
 
     artistSelect.innerHTML = "";
 
-    // Populate the select with artists based on album id
+    // POPULATE THE SELECT BASED ON ALBUM ID
     filteredArtists.forEach((artist) => {
       const option = document.createElement("option");
       option.value = artist.artist_id;
@@ -46,11 +46,11 @@ export default class TrackUpdateDialog extends Dialog {
     const albumSelect = form.querySelector("#update-album-id");
     const artistSelect = form.querySelector("#update-artist-id");
 
-    // Get the selected album id
+    // GET THE SELECTED ID
     const selectedAlbumId = albumSelect.value;
     console.log(selectedAlbumId);
 
-    // Fetch artists from backend
+    // FETCH ARTISTS FROM BACKEND
     const artists = await REST.readAlbumsArtists(selectedAlbumId);
     console.log(artists);
 
@@ -60,7 +60,7 @@ export default class TrackUpdateDialog extends Dialog {
 
     artistSelect.innerHTML = "";
 
-    // Populate the select with artists based on album id
+    // POPULATE SELECT WITH ARTISTS BASED ON ALBUM ID
     filteredArtists.forEach((artist) => {
       const option = document.createElement("option");
       option.value = artist.artist_id;

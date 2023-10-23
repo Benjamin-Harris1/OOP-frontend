@@ -7,9 +7,7 @@ import Track from "./model/track.js";
 
 const endpoint = "https://musicdb-database-kea-benjamin.azurewebsites.net";
 
-//let allArtists = [];
-//let allAlbums = [];
-//let lastFetch = 0;
+
 
 // FETCH ARTISTS
 async function readArtists() {
@@ -75,7 +73,7 @@ async function readAlbumsTracks(albumTrackId) {
     };
   });
 }
-
+// UPDATE GRID
 async function updateArtistsGrid() {
   const artistsData = await readArtists();
   const albumsData = await readAlbums();
@@ -89,12 +87,11 @@ async function updateArtistsGrid() {
   renderAlbums(albums, albumRenderer);
   renderTracks(tracks, trackRenderer);
 }
-
+// SEARCH
 async function searchBackend(query, artistListRenderer, albumListRenderer, trackListRenderer) {
   const response = await fetch(`${endpoint}/fullAlbums/search?q=${query}`);
   const searchData = await response.json();
 
-  // Filter and update search results in the corresponding list renderer
   if (searchData && Array.isArray(searchData)) {
     const filteredArtists = [];
     const filteredAlbums = [];
@@ -133,8 +130,7 @@ async function searchBackend(query, artistListRenderer, albumListRenderer, track
   }
 }
 
-// ARTISTS CREATE, UPDATE, DELETE
-
+// ARTISTS BACKEND CRUD
 async function createArtist(artist) {
   const json = JSON.stringify(artist);
   const response = await fetch(`${endpoint}/artists`, {
@@ -178,8 +174,7 @@ async function deleteArtist(artist) {
   }
 }
 
-// ALBUM CREATE, UPDATE, DELETE
-
+// ALBUM BACKEND CRUD
 async function createAlbum(album) {
   const json = JSON.stringify(album);
   const response = await fetch(`${endpoint}/albums`, {
@@ -223,7 +218,7 @@ async function deleteAlbum(album) {
   }
 }
 
-// TRACK
+// TRACKS BACKEND CRUD
 async function createTrack(track) {
   const json = JSON.stringify(track);
   const response = await fetch(`${endpoint}/tracks`, {
@@ -255,6 +250,7 @@ async function updateTrack(track) {
     updateArtistsGrid();
   }
 }
+
 async function deleteTrack(track) {
   const response = await fetch(`${endpoint}/tracks/${track.id}`, {
     method: "DELETE",
