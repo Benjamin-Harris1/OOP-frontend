@@ -226,7 +226,7 @@ async function initApp() {
 
   await REST.updateArtistsGrid();
 }
-
+// DISPLAY ARTISTS 
 function renderArtists(artists) {
   artists.sort((a, b) => a.name.localeCompare(b.name));
   const container = document.querySelector("#artists");
@@ -236,7 +236,7 @@ function renderArtists(artists) {
     container.insertAdjacentHTML("beforeend", html);
   }
 }
-
+// DISPLAY ALBUMS
 async function renderAlbums(albums) {
   albums.sort((a, b) => a.title.localeCompare(b.title));
   const container = document.querySelector("#albums");
@@ -246,7 +246,7 @@ async function renderAlbums(albums) {
     container.insertAdjacentHTML("beforeend", html);
   }
 }
-
+// DISPLAY TRACKS
 function renderTracks(tracks) {
   tracks.sort((a, b) => a.title.localeCompare(b.title));
   const container = document.querySelector("#tracks");
@@ -257,7 +257,7 @@ function renderTracks(tracks) {
   }
 }
 
-// ARTIST CREATE, UPDATE, DELETE
+// ARTISTS FRONTEND CRUD
 async function createArtist(artist) {
   try {
     await REST.createArtist(artist);
@@ -293,7 +293,7 @@ async function deleteArtist(artist) {
   }
 }
 
-// ALBUM CREATE, UPDATE, DELETE
+// ALBUMS FRONTEND CRUD
 async function createAlbum(album) {
   try {
     await REST.createAlbum(album); // Make sure createAlbum in rest.js returns a promise
@@ -327,7 +327,7 @@ async function deleteAlbum(album) {
     console.log(error);
   }
 }
-
+// TRACKS FRONTEND CRUD
 async function createTrack(track) {
   try {
     await REST.createTrack(track);
