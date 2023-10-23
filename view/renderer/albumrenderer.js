@@ -1,7 +1,5 @@
 import ItemRenderer from "./itemrenderer.js";
 
-//const endpoint = "http://localhost:3000";
-
 export default class AlbumRenderer extends ItemRenderer {
   render(album) {
     const releaseDate = new Date(album.release_date);
@@ -11,12 +9,6 @@ export default class AlbumRenderer extends ItemRenderer {
       year: "numeric",
     });
   
-    //const response = await fetch(`${endpoint}/artists`);
-    //const artists = await response.json();
-    //const artistIds = artists.map(artist => artist.id);
-
-   
-
     const html = /*html*/ `
       <div class="grid-item">
         <h2 data-album-title="${album.title}">${album.title}</h2>

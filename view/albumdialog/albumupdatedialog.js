@@ -4,18 +4,18 @@ import Dialog from "../dialog.js";
 import * as REST from "../../rest.js";
 
 export default class AlbumUpdateDialog extends Dialog {
-  // KIG EVT. PÅ TRACKCREATE OG UPDATE OG SE HVORDAN DEN HAR BRUGT /albumsArtists routeren.
+
   async populateArtistsDropdown() {
     const form = this.dialog.querySelector("form");
     const artistSelect = form.querySelector("#create-artist-id");
 
-    // Fetch the artists from the backend
+    // FETCH ARTISTS FROM BACKEND
     const artists = await REST.readAlbumsArtists();
 
-    // Clear any existing options
+    // CLEAR HTML
     artistSelect.innerHTML = "";
 
-    // Populate the select with the retrieved artists
+    // POPULATE THE SELECT WITH RETRIEVED ARRAY
     artists.forEach((artist) => {
       const option = document.createElement("option");
       option.value = artist.artist_id;
@@ -41,7 +41,6 @@ export default class AlbumUpdateDialog extends Dialog {
       <input type="text" id="update-release_date" name="release_date" placeholder="Type the date of release">
       <label for="create-artist-id">Artist:</label>
       <select id="create-artist-id" name="artist_id">
-        <!-- Artist options will be dynamically generated here -->
         <select>
       <button data-action="update">Update</button>
       </form>

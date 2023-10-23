@@ -12,13 +12,13 @@ export default class AlbumCreateDialog extends Dialog {
     const form = this.dialog.querySelector("form");
     const artistSelect = form.querySelector("#create-artist-id");
 
-    // Fetch the artists from the backend
+    // FETCH ARTISTS FROM BACKEND
     const artists = await REST.readArtists();
 
-    // Clear any existing options
+    // CLEAR HTML
     artistSelect.innerHTML = "";
 
-    // Populate the select with the retrieved artists
+    // POPULATE THE SELECT WITH RETRIEVED ARRAY
     artists.forEach((artist) => {
       const option = document.createElement("option");
       option.value = artist.id;
@@ -39,7 +39,6 @@ export default class AlbumCreateDialog extends Dialog {
           <input type="text" id="create-release_date" name="release_date" placeholder="Type the date of the album's release date ...">
           <label for="create-artist-id">Artist:</label>
           <select id="create-artist-id" name="artist_id">
-            <!-- Artist options will be dynamically generated here -->
           </select>
           <button data-action="create">Create</button>
         </form>

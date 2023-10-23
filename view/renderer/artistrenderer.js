@@ -1,6 +1,4 @@
 import ItemRenderer from "./itemrenderer.js";
-import * as controller from "../../app.js";
-import ArtistDeleteDialog from "../artistdialog/artistdeletedialog.js";
 
 export default class ArtistRenderer extends ItemRenderer {
   render(artist) {
