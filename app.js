@@ -212,7 +212,6 @@ async function initApp() {
   }
 
   artists = await REST.readArtists();
-  console.log(artists);
   albums = await REST.readAlbums();
   tracks = await REST.readTracks();
 
