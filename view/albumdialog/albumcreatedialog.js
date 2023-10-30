@@ -36,7 +36,7 @@ export default class AlbumCreateDialog extends Dialog {
           <label for="create-title">Title:</label>
           <input type="text" id="create-title" name="title" placeholder="Type the title of the album here ...">
           <label for="create-release_date">Release date:</label>
-          <input type="text" id="create-release_date" name="release_date" placeholder="Type the date of the album's release date ...">
+          <input type="date" id="create-release_date" name="release_date" placeholder="Type the date of the album's release date ...">
           <label for="create-artist-id">Artist:</label>
           <select id="create-artist-id" name="artist_id">
           </select>
